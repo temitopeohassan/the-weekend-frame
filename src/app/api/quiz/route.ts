@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 
-const appUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
+const appUrl = process.env.NEXT_PUBLIC_URL;
 
 console.log("API Route - App URL:", appUrl);
 

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 
-const appUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
+const appUrl = process.env.NEXT_PUBLIC_URL;
 
 console.log("App URL:", appUrl);
 
