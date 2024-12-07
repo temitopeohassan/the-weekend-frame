@@ -100,21 +100,15 @@ let currentAnswers: number[] = [];
 export async function POST(req: NextRequest) {
   try {
     console.log("Received POST request");
-    console.log("Current answers before processing:", currentAnswers);
     const data = await req.json();
-    console.log("Request data:", data);
-
     const { untrustedData } = data;
     const { buttonIndex } = untrustedData;
     console.log("Button index:", buttonIndex);
 
-    // If it's a "Start Over" action, reset the answers
-    if (currentAnswers.length >= QUESTIONS.length) {
-      console.log("Quiz completed, resetting answers");
-      currentAnswers = [];
-      // Show first question
+    // If this is the first interaction (coming from the start page)
+    if (currentAnswers.length === 0) {
       const firstQuestion = QUESTIONS[0];
-      console.log("Showing first question after reset:", firstQuestion);
+      console.log("Starting quiz with first question:", firstQuestion);
       const frameHtml = `
         <!DOCTYPE html>
         <html>
