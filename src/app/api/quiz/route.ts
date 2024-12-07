@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 
-const appUrl = process.env.NEXT_PUBLIC_URL;
+const appUrl = process.env.NEXT_PUBLIC_URL || "https://the-weekend-frame-seven.vercel.app";
 
 console.log("API Route - App URL:", appUrl);
 
@@ -122,6 +122,7 @@ export async function POST(req: NextRequest) {
             <title>${firstQuestion.text}</title>
             <meta property="fc:frame" content="vNext" />
             <meta property="fc:frame:image" content="${appUrl}/quiz/${firstQuestion.id}/opengraph-image" />
+            <meta property="og:image" content="${appUrl}/quiz/${firstQuestion.id}/opengraph-image" />
             ${firstQuestion.options.map((option, index) => 
               `<meta property="fc:frame:button:${index + 1}" content="${option}" />`
             ).join('\n')}
