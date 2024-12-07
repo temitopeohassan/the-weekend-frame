@@ -156,6 +156,7 @@ export async function POST(req: NextRequest) {
             <title>Your F1 Team Result</title>
             <meta property="fc:frame" content="vNext" />
             <meta property="fc:frame:image" content="${appUrl}/quiz/result/${team}/opengraph-image" />
+            <meta property="og:image" content="${appUrl}/quiz/result/${team}/opengraph-image" />
             <meta property="fc:frame:button:1" content="Start Over" />
             <meta property="fc:frame:button:2" content="Share Result" />
             <meta property="fc:frame:post_url" content="${appUrl}/api/quiz" />
@@ -185,6 +186,7 @@ export async function POST(req: NextRequest) {
           <title>${nextQuestion.text}</title>
           <meta property="fc:frame" content="vNext" />
           <meta property="fc:frame:image" content="${appUrl}/quiz/${nextQuestion.id}/opengraph-image" />
+          <meta property="og:image" content="${appUrl}/quiz/${nextQuestion.id}/opengraph-image" />
           ${nextQuestion.options.map((option, index) => 
             `<meta property="fc:frame:button:${index + 1}" content="${option}" />`
           ).join('\n')}
@@ -212,11 +214,9 @@ export async function GET() {
   console.log("Received GET request");
   console.log("Current answers at GET start:", currentAnswers);
   
-  // Reset answers for new quiz
   currentAnswers = [];
   console.log("Reset answers in GET:", currentAnswers);
   
-  // Initial question
   const firstQuestion = QUESTIONS[0];
   console.log("Showing first question in GET:", firstQuestion);
   const frameHtml = `
@@ -226,6 +226,7 @@ export async function GET() {
         <title>${firstQuestion.text}</title>
         <meta property="fc:frame" content="vNext" />
         <meta property="fc:frame:image" content="${appUrl}/quiz/${firstQuestion.id}/opengraph-image" />
+        <meta property="og:image" content="${appUrl}/quiz/${firstQuestion.id}/opengraph-image" />
         ${firstQuestion.options.map((option, index) => 
           `<meta property="fc:frame:button:${index + 1}" content="${option}" />`
         ).join('\n')}

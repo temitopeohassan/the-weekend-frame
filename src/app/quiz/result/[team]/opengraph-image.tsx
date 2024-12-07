@@ -48,6 +48,7 @@ export default async function Image({ params }: Props) {
         <h1 tw="text-4xl font-bold text-center text-white mb-4">You Are:</h1>
         <h2 tw="text-5xl font-bold text-center text-white mb-6">{team}</h2>
         <p tw="text-xl text-center text-white px-8">{teamInfo.description}</p>
+        <meta property="og:image" content="${appUrl}/quiz/result/${team}/opengraph-image" />
       </div>
     ),
     {
