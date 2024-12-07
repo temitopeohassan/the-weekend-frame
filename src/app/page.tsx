@@ -8,11 +8,11 @@ export const revalidate = 300;
 
 export async function generateMetadata(): Promise<Metadata> {
   const metadata = {
-    title: "The Weekend Quiz",
-    description: "Test your knowledge with our weekend quiz!",
+    title: "The Weekend Frame",
+    description: "Which Formula 1 Team Are You?",
     openGraph: {
-      title: "The Weekend Quiz",
-      description: "Test your knowledge with our weekend quiz!",
+      title: "The Weekend Frame",
+      description: "Which Formula 1 Team Are You?",
       images: [{
         url: `${appUrl}/opengraph-image`,
         width: 600,
@@ -35,7 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-24">
-      <h1 className="text-4xl font-bold">The Weekend Quiz</h1>
+      <h1 className="text-4xl font-bold">The Weekend Frame</h1>
       <p className="mt-4 text-xl">View this page in Warpcast to start the quiz!</p>
     </div>
   );

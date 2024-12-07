@@ -12,8 +12,8 @@ export default async function Image() {
   return new ImageResponse(
     (
       <div tw="h-full w-full flex flex-col justify-center items-center relative bg-purple-900 text-white">
-        <h1 tw="text-6xl font-bold">The Weekend Quiz</h1>
-        <p tw="text-2xl mt-4">Test your knowledge!</p>
+        <h1 tw="text-6xl font-bold">The Weekend Frame</h1>
+        <p tw="text-2xl mt-4">Which Formula 1 Team Are You?</p>
       </div>
     ),
     {

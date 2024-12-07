@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import "~/app/globals.css";
 
 export const metadata: Metadata = {
-  title: "The Weekend Quiz",
-  description: "Test your knowledge with our weekend quiz!",
+  title: "The Weekend Frame",
+  description: "Which Formula 1 Team Are You?",
 };
 
 export default function RootLayout({
