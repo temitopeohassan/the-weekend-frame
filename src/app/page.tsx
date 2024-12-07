@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 
-const appUrl = process.env.NEXT_PUBLIC_URL;
+const appUrl = process.env.NEXT_PUBLIC_URL || "https://the-weekend-frame-seven.vercel.app";
 
 console.log("App URL:", appUrl);
 
