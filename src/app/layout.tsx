@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 
 import "~/app/globals.css";
-import { Providers } from "~/app/providers";
 
 export const metadata: Metadata = {
-  title: "Casts Ⓜ️ Earning Stats",
-  description: "Track the Moxie Earnings of Your Latest Casts",
+  title: "The Weekend Quiz",
+  description: "Test your knowledge with our weekend quiz!",
 };
 
 export default function RootLayout({
@@ -16,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-white dark:bg-gray-900">
-        <Providers>{children}</Providers>
+        {children}
       </body>
     </html>
   );

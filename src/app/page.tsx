@@ -1,38 +1,42 @@
 import { Metadata } from "next";
-import App from "./app";
 
-const appUrl = process.env.NEXT_PUBLIC_URL;
+const appUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
 
-const frame = {
-  version: "next",
-  imageUrl: `${appUrl}/opengraph-image`,
-  button: {
-    title: "See My Ⓜ️ Earnings",
-    action: {
-      type: "launch_frame",
-      name: "Casts Ⓜ️ Earning Stats",
-      url: appUrl,
-      splashImageUrl: `${appUrl}/splash.png`,
-      splashBackgroundColor: "#581C87",
-    },
-  },
-};
+console.log("App URL:", appUrl);
 
 export const revalidate = 300;
 
 export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: "Casts Ⓜ️ Earning Stats",
+  const metadata = {
+    title: "The Weekend Quiz",
+    description: "Test your knowledge with our weekend quiz!",
     openGraph: {
-      title: "Casts Ⓜ️ Earning Stats",
-      description: "Track the Moxie Earnings of Your Latest Casts",
+      title: "The Weekend Quiz",
+      description: "Test your knowledge with our weekend quiz!",
+      images: [{
+        url: `${appUrl}/opengraph-image`,
+        width: 600,
+        height: 400,
+      }],
     },
     other: {
-      "fc:frame": JSON.stringify(frame),
+      "fc:frame": "vNext",
+      "fc:frame:image": `${appUrl}/opengraph-image`,
+      "fc:frame:button:1": "Start Quiz",
+      "fc:frame:post_url": `${appUrl}/api/quiz`,
     },
   };
+
+  console.log("Generated metadata:", metadata);
+
+  return metadata;
 }
 
 export default function Home() {
-  return (<App />);
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center p-24">
+      <h1 className="text-4xl font-bold">The Weekend Quiz</h1>
+      <p className="mt-4 text-xl">View this page in Warpcast to start the quiz!</p>
+    </div>
+  );
 }
