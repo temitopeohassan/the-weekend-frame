@@ -80,7 +80,7 @@ function calculateTeam(answers: number[]): string {
   };
 
   // Map answers to team scores
-  answers.forEach((answer, index) => {
+  answers.forEach((answer) => {
     switch (answer) {
       case 1: scores[TEAMS.MERCEDES]++; break;
       case 2: scores[TEAMS.FERRARI]++; break;
