@@ -8,13 +8,14 @@ export const revalidate = 300;
 
 export async function generateMetadata(): Promise<Metadata> {
   const metadata = {
+    metadataBase: new URL(appUrl),
     title: "The Weekend Frame",
     description: "Which Formula 1 Team Are You?",
     openGraph: {
       title: "The Weekend Frame",
       description: "Which Formula 1 Team Are You?",
       images: [{
-        url: `${appUrl}/opengraph-image`,
+        url: `/opengraph-image`,
         width: 600,
         height: 400,
       }],

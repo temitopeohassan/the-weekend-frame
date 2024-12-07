@@ -105,38 +105,12 @@ export async function POST(req: NextRequest) {
     const { buttonIndex } = untrustedData;
     console.log("Button index:", buttonIndex);
 
-    // If this is the first interaction (coming from the start page)
-    if (currentAnswers.length === 0) {
-      const firstQuestion = QUESTIONS[0];
-      console.log("Starting quiz with first question:", firstQuestion);
-      const frameHtml = `
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <title>${firstQuestion.text}</title>
-            <meta property="fc:frame" content="vNext" />
-            <meta property="fc:frame:image" content="${appUrl}/quiz/${firstQuestion.id}/opengraph-image" />
-            <meta property="og:image" content="${appUrl}/quiz/${firstQuestion.id}/opengraph-image" />
-            ${firstQuestion.options.map((option, index) => 
-              `<meta property="fc:frame:button:${index + 1}" content="${option}" />`
-            ).join('\n')}
-            <meta property="fc:frame:post_url" content="${appUrl}/api/quiz" />
-          </head>
-        </html>
-      `;
-      return new Response(frameHtml, {
-        headers: { "Content-Type": "text/html" },
-      });
-    }
-
     // Record the answer
     currentAnswers.push(buttonIndex);
     console.log("Current answers after recording:", currentAnswers);
     
     // Get the next question (or show result if quiz is complete)
-    const currentQuestionIndex = currentAnswers.length - 1;
-    const nextQuestionIndex = currentAnswers.length;
-    console.log("Current question index:", currentQuestionIndex);
+    const nextQuestionIndex = currentAnswers.length - 1;
     console.log("Next question index:", nextQuestionIndex);
 
     if (nextQuestionIndex >= QUESTIONS.length) {
@@ -171,18 +145,18 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Show next question
-    const nextQuestion = QUESTIONS[nextQuestionIndex];
-    console.log("Showing next question:", nextQuestion);
+    // Show current question
+    const currentQuestion = QUESTIONS[nextQuestionIndex];
+    console.log("Showing question:", currentQuestion);
     const frameHtml = `
       <!DOCTYPE html>
       <html>
         <head>
-          <title>${nextQuestion.text}</title>
+          <title>${currentQuestion.text}</title>
           <meta property="fc:frame" content="vNext" />
-          <meta property="fc:frame:image" content="${appUrl}/quiz/${nextQuestion.id}/opengraph-image" />
-          <meta property="og:image" content="${appUrl}/quiz/${nextQuestion.id}/opengraph-image" />
-          ${nextQuestion.options.map((option, index) => 
+          <meta property="fc:frame:image" content="${appUrl}/quiz/${currentQuestion.id}/opengraph-image" />
+          <meta property="og:image" content="${appUrl}/quiz/${currentQuestion.id}/opengraph-image" />
+          ${currentQuestion.options.map((option, index) => 
             `<meta property="fc:frame:button:${index + 1}" content="${option}" />`
           ).join('\n')}
           <meta property="fc:frame:post_url" content="${appUrl}/api/quiz" />
