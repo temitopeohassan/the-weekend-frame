@@ -22,9 +22,9 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     other: {
       "fc:frame": "vNext",
-      "fc:frame:image": `${appUrl}/opengraph-image`,
+      "fc:frame:image": `/opengraph-image`,
       "fc:frame:button:1": "Start Quiz",
-      "fc:frame:post_url": `${appUrl}/api/quiz`,
+      "fc:frame:post_url": `/api/quiz`,
     },
   };
 
