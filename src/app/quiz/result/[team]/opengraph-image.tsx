@@ -9,16 +9,16 @@ export const size = {
 
 export const contentType = "image/png";
 
-const TEAM_COLORS = {
-  "Mercedes-AMG Petronas": "#00D2BE",
-  "Scuderia Ferrari": "#DC0000",
-  "Red Bull Racing": "#0600EF",
-  "McLaren F1 Team": "#FF8700",
+const STABLECOIN_COLORS = {
+  "USD Coin (USDC)": "#2775CA",
+  "DAI Stablecoin": "#F5AC37",
+  "Tether (USDT)": "#26A17B",
+  "Frax": "#000000",
 };
 
 export default async function Image({ params }: { params: { team: string } }) {
   const teamName = decodeURIComponent(params.team);
-  const bgColor = TEAM_COLORS[teamName as keyof typeof TEAM_COLORS] || "#581C87";
+  const bgColor = STABLECOIN_COLORS[teamName as keyof typeof STABLECOIN_COLORS] || "#581C87";
 
   return new ImageResponse(
     (
@@ -34,7 +34,7 @@ export default async function Image({ params }: { params: { team: string } }) {
         }}
       >
         <h1 style={{ color: 'white', fontSize: '48px', marginBottom: '16px' }}>
-          Your F1 Team Match:
+          Your Stablecoin Match:
         </h1>
         <p style={{ color: 'white', fontSize: '36px' }}>
           {teamName}

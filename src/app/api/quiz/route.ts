@@ -13,83 +13,80 @@ interface Question {
 const QUESTIONS: Question[] = [
   {
     id: 1,
-    text: "What's your approach to competition?",
+    text: "What's your approach to financial stability?",
     options: [
-      "Calculated and Strategic",
-      "Aggressive and Bold",
-      "Traditional and Methodical",
-      "Innovative and Dynamic"
+      "Traditional and Regulated",
+      "Algorithmic and Dynamic",
+      "Asset-Backed and Secure",
+      "Community-Driven"
     ]
   },
   {
     id: 2,
-    text: "Pick your ideal racing conditions:",
+    text: "Pick your ideal backing asset:",
     options: [
-      "High-pressure situations",
-      "Wet and challenging",
-      "Technical circuits",
-      "High-speed tracks"
+      "US Dollar",
+      "Crypto Assets",
+      "Multiple Currencies",
+      "Gold and Commodities"
     ]
   },
   {
     id: 3,
-    text: "What's your team philosophy?",
+    text: "What's most important to you?",
     options: [
-      "Excellence through precision",
-      "Push the boundaries",
-      "Honor the legacy",
-      "Embrace the future"
+      "Regulatory Compliance",
+      "Innovation",
+      "Transparency",
+      "Decentralization"
     ]
   },
   {
     id: 4,
-    text: "Choose your team color:",
+    text: "Choose your preferred blockchain:",
     options: [
-      "Silver",
-      "Red",
-      "Dark Blue",
-      "Orange"
+      "Ethereum",
+      "Multiple Chains",
+      "Layer 2 Solutions",
+      "Alternative L1s"
     ]
   },
   {
     id: 5,
-    text: "What's most important to you?",
+    text: "What's your risk tolerance?",
     options: [
-      "Engineering perfection",
-      "Passion and emotion",
-      "Team history",
-      "Innovation"
+      "Very Low",
+      "Moderate",
+      "Low",
+      "Balanced"
     ]
   }
 ];
 
-const TEAMS = {
-  MERCEDES: "Mercedes-AMG Petronas",
-  FERRARI: "Scuderia Ferrari",
-  RED_BULL: "Red Bull Racing",
-  MCLAREN: "McLaren F1 Team"
+const STABLECOINS = {
+  USDC: "USD Coin (USDC)",
+  DAI: "DAI Stablecoin",
+  USDT: "Tether (USDT)",
+  FRAX: "Frax"
 };
 
-function calculateTeam(answers: number[]): string {
-  // Simple scoring system
+function calculateStablecoin(answers: number[]): string {
   const scores = {
-    [TEAMS.MERCEDES]: 0,
-    [TEAMS.FERRARI]: 0,
-    [TEAMS.RED_BULL]: 0,
-    [TEAMS.MCLAREN]: 0
+    [STABLECOINS.USDC]: 0,
+    [STABLECOINS.DAI]: 0,
+    [STABLECOINS.USDT]: 0,
+    [STABLECOINS.FRAX]: 0
   };
 
-  // Map answers to team scores
   answers.forEach((answer) => {
     switch (answer) {
-      case 1: scores[TEAMS.MERCEDES]++; break;
-      case 2: scores[TEAMS.FERRARI]++; break;
-      case 3: scores[TEAMS.RED_BULL]++; break;
-      case 4: scores[TEAMS.MCLAREN]++; break;
+      case 1: scores[STABLECOINS.USDC]++; break;
+      case 2: scores[STABLECOINS.DAI]++; break;
+      case 3: scores[STABLECOINS.USDT]++; break;
+      case 4: scores[STABLECOINS.FRAX]++; break;
     }
   });
 
-  // Find team with highest score
   return Object.entries(scores).reduce((a, b) => 
     scores[a[0]] > scores[b[0]] ? a : b
   )[0];
@@ -115,14 +112,14 @@ export async function POST(req: NextRequest) {
 
     if (nextQuestionIndex >= QUESTIONS.length) {
       console.log("Quiz complete, calculating result");
-      const team = calculateTeam(currentAnswers);
+      const team = calculateStablecoin(currentAnswers);
       console.log("Calculated team:", team);
-      const shareText = `I got ${team} in the F1 Team Personality Quiz! Which team are you? 🏎️`;
+      const shareText = `I got ${team} in the Stablecoin Personality Quiz! Which team are you? 🏎️`;
       const frameHtml = `
         <!DOCTYPE html>
         <html>
           <head>
-            <title>Your F1 Team Result</title>
+            <title>Your Stablecoin Result</title>
             <meta property="fc:frame" content="vNext" />
             <meta property="fc:frame:image" content="${appUrl}/quiz/result/${team}/opengraph-image" />
             <meta property="og:image" content="${appUrl}/quiz/result/${team}/opengraph-image" />
