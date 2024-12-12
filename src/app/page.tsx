@@ -24,7 +24,6 @@ export default function Home() {
     sdk.actions.openUrl(`${appUrl}/api/quiz`);
   }, []);
 
-  // Server-side metadata generation remains the same
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-24 bg-white dark:bg-gray-900">
       <h1 className="text-4xl font-bold text-center text-gray-900 dark:text-white">
@@ -52,6 +51,3 @@ export default function Home() {
     </div>
   );
 }
-
-// The generateMetadata function remains unchanged from the original
-export { generateMetadata } from './metadata';
