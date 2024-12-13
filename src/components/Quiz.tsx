@@ -17,6 +17,9 @@ export default function Quiz(
   const [notificationDetails, setNotificationDetails] =
     useState<FrameNotificationDetails | null>(null);
   const [quizStarted, setQuizStarted] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState<number>(0);
+  const [answers, setAnswers] = useState<number[]>([]);
+  const [quizComplete, setQuizComplete] = useState(false);
 
   useEffect(() => {
     setNotificationDetails(context?.client.notificationDetails ?? null);
@@ -33,9 +36,61 @@ export default function Quiz(
     }
   }, [isSDKLoaded]);
 
+  const questions = [
+    {
+      text: "What's your approach to financial stability?",
+      options: [
+        "Traditional and Regulated",
+        "Algorithmic and Dynamic",
+        "Asset-Backed and Secure",
+        "Community-Driven"
+      ]
+    },
+    {
+      text: "Pick your ideal backing asset:",
+      options: [
+        "US Dollar",
+        "Crypto Assets",
+        "Multiple Currencies",
+        "Gold and Commodities"
+      ]
+    },
+    {
+      text: "What's most important to you?",
+      options: [
+        "Regulatory Compliance",
+        "Innovation",
+        "Transparency",
+        "Decentralization"
+      ]
+    },
+    {
+      text: "Choose your preferred blockchain:",
+      options: [
+        "Ethereum",
+        "Multiple Chains",
+        "Layer 2 Solutions",
+        "Alternative L1s"
+      ]
+    },
+    {
+      text: "What's your risk tolerance?",
+      options: [
+        "Very Low",
+        "Moderate",
+        "Low",
+        "Balanced"
+      ]
+    }
+  ];
+
   const startQuiz = useCallback(async () => {
     try {
       setQuizStarted(true);
+      setCurrentQuestion(0);
+      setAnswers([]);
+      setQuizComplete(false);
+      
       const response = await fetch(`${appUrl}/api/quiz`, {
         method: 'POST',
         headers: {
@@ -53,13 +108,46 @@ export default function Quiz(
       }
       
       const html = await response.text();
-      // Handle the quiz HTML response here
       console.log('Quiz started:', html);
     } catch (error) {
       console.error('Error starting quiz:', error);
       setQuizStarted(false);
     }
   }, []);
+
+  const handleAnswer = useCallback(async (answerIndex: number) => {
+    try {
+      const newAnswers = [...answers, answerIndex];
+      setAnswers(newAnswers);
+      
+      const response = await fetch(`${appUrl}/api/quiz`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          untrustedData: {
+            buttonIndex: answerIndex
+          },
+          answers: newAnswers
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit answer');
+      }
+
+      const html = await response.text();
+      
+      if (currentQuestion >= 4) { // Assuming 5 questions total (0-4)
+        setQuizComplete(true);
+      } else {
+        setCurrentQuestion(prev => prev + 1);
+      }
+    } catch (error) {
+      console.error('Error submitting answer:', error);
+    }
+  }, [answers, currentQuestion, appUrl]);
 
   const shareResult = useCallback(() => {
     sdk.actions.openUrl("https://warpcast.com/~/compose");
@@ -88,6 +176,21 @@ export default function Quiz(
           >
             Start Quiz
           </button>
+        </div>
+      ) : !quizComplete ? (
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">{questions[currentQuestion].text}</h2>
+          <div className="space-y-2">
+            {questions[currentQuestion].options.map((option, index) => (
+              <button
+                key={index}
+                onClick={() => handleAnswer(index + 1)}
+                className="w-full py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+              >
+                {option}
+              </button>
+            ))}
+          </div>
         </div>
       ) : (
         <div className="mb-8">
