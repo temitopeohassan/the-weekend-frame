@@ -2,12 +2,16 @@
 
 import dynamic from "next/dynamic";
 
-const Demo = dynamic(() => import("~/components/Demo"), {
+const Quiz = dynamic(() => import("~/components/Quiz"), {
   ssr: false,
 });
 
 export default function App(
-  { title }: { title?: string } = { title: "Frames v2 Demo" }
+  { title }: { title?: string } = { title: "Stablecoin Personality Quiz" }
 ) {
-  return <Demo title={title} />;
+  return (
+    <main className="min-h-screen flex flex-col p-4">
+      <Quiz title={title} />
+    </main>
+  );
 }

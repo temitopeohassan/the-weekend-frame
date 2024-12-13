@@ -1,9 +1,5 @@
 import { Metadata } from "next";
-import dynamic from "next/dynamic";
-
-const Quiz = dynamic(() => import("~/components/Quiz"), {
-  ssr: false,
-});
+import App from "./app";
 
 const appUrl = process.env.NEXT_PUBLIC_URL || "https://the-weekend-frame-seven.vercel.app";
 
@@ -45,9 +41,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function Home() {
-  return (
-    <main className="min-h-screen flex flex-col p-4">
-      <Quiz />
-    </main>
-  );
+  return <App title="Stablecoin Personality Quiz" />;
 }
