@@ -33,9 +33,32 @@ export default function Quiz(
     }
   }, [isSDKLoaded]);
 
-  const startQuiz = useCallback(() => {
-    setQuizStarted(true);
-    sdk.actions.openUrl(`${appUrl}/api/quiz`);
+  const startQuiz = useCallback(async () => {
+    try {
+      setQuizStarted(true);
+      const response = await fetch(`${appUrl}/api/quiz`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          untrustedData: {
+            buttonIndex: 1
+          }
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to start quiz');
+      }
+      
+      const html = await response.text();
+      // Handle the quiz HTML response here
+      console.log('Quiz started:', html);
+    } catch (error) {
+      console.error('Error starting quiz:', error);
+      setQuizStarted(false);
+    }
   }, []);
 
   const shareResult = useCallback(() => {
