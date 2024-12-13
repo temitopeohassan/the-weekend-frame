@@ -20,6 +20,7 @@ export default function Quiz(
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [quizComplete, setQuizComplete] = useState(false);
+  const [quizResult, setQuizResult] = useState<string>("");
 
   useEffect(() => {
     setNotificationDetails(context?.client.notificationDetails ?? null);
@@ -90,6 +91,7 @@ export default function Quiz(
       setCurrentQuestion(0);
       setAnswers([]);
       setQuizComplete(false);
+      setQuizResult("");
       
       const response = await fetch(`${appUrl}/api/quiz`, {
         method: 'POST',
@@ -136,7 +138,12 @@ export default function Quiz(
         throw new Error('Failed to submit answer');
       }
 
+      const html = await response.text();
+      
       if (currentQuestion >= questions.length - 1) {
+        const resultMatch = html.match(/I got (.*?) in the Stablecoin Personality Quiz!/);
+        const result = resultMatch ? resultMatch[1] : "Unknown Result";
+        setQuizResult(result);
         setQuizComplete(true);
       } else {
         setCurrentQuestion(prev => prev + 1);
@@ -144,11 +151,13 @@ export default function Quiz(
     } catch (error) {
       console.error('Error submitting answer:', error);
     }
-  }, [answers, currentQuestion, appUrl, questions.length]);
+  }, [answers, currentQuestion, questions.length, appUrl]);
 
   const shareResult = useCallback(() => {
-    sdk.actions.openUrl("https://warpcast.com/~/compose");
-  }, []);
+    const shareText = `I got ${quizResult} in the Stablecoin Personality Quiz! Which team are you? 🏎️`;
+    const shareUrl = `https://warpcast.com/~/compose?text=${encodeURIComponent(shareText)}`;
+    sdk.actions.openUrl(shareUrl);
+  }, [quizResult]);
 
   const toggleContext = useCallback(() => {
     setIsContextOpen((prev) => !prev);
@@ -191,6 +200,8 @@ export default function Quiz(
         </div>
       ) : (
         <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">Your Result:</h2>
+          <p className="text-center text-lg mb-4">{quizResult}</p>
           <button
             onClick={shareResult}
             className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
