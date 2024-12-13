@@ -128,8 +128,7 @@ export default function Quiz(
         body: JSON.stringify({
           untrustedData: {
             buttonIndex: answerIndex
-          },
-          answers: newAnswers
+          }
         })
       });
 
@@ -137,9 +136,7 @@ export default function Quiz(
         throw new Error('Failed to submit answer');
       }
 
-      const html = await response.text();
-      
-      if (currentQuestion >= 4) { // Assuming 5 questions total (0-4)
+      if (currentQuestion >= questions.length - 1) {
         setQuizComplete(true);
       } else {
         setCurrentQuestion(prev => prev + 1);
@@ -147,7 +144,7 @@ export default function Quiz(
     } catch (error) {
       console.error('Error submitting answer:', error);
     }
-  }, [answers, currentQuestion, appUrl]);
+  }, [answers, currentQuestion, appUrl, questions.length]);
 
   const shareResult = useCallback(() => {
     sdk.actions.openUrl("https://warpcast.com/~/compose");
