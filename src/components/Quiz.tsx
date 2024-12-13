@@ -141,8 +141,8 @@ export default function Quiz(
       const html = await response.text();
       
       if (currentQuestion >= questions.length - 1) {
-        const resultMatch = html.match(/I got (.*?) in the Stablecoin Personality Quiz!/);
-        const result = resultMatch ? resultMatch[1] : "Unknown Result";
+        const teamMatch = html.match(/content="([^"]*?)\/quiz\/result\/(.*?)\/opengraph-image"/);
+        const result = teamMatch ? decodeURIComponent(teamMatch[2]) : "Unknown Result";
         setQuizResult(result);
         setQuizComplete(true);
       } else {
