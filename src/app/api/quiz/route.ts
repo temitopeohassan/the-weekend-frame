@@ -114,7 +114,7 @@ export async function POST(req: NextRequest) {
       console.log("Quiz complete, calculating result");
       const team = calculateStablecoin(currentAnswers);
       console.log("Calculated team:", team);
-      const shareText = `I got ${team} in the Stablecoin Personality Quiz! Which team are you? 🏎️`;
+      const shareText = `I got ${team} in the Stablecoin Personality Quiz! Which Stablecoin are you? 💰`;
       const frameHtml = `
         <!DOCTYPE html>
         <html>
@@ -152,11 +152,10 @@ export async function POST(req: NextRequest) {
           <title>${currentQuestion.text}</title>
           <meta property="fc:frame" content="vNext" />
           <meta property="fc:frame:image" content="${appUrl}/quiz/${currentQuestion.id}/opengraph-image" />
-          <meta property="og:image" content="${appUrl}/quiz/${currentQuestion.id}/opengraph-image" />
+          <meta property="fc:frame:post_url" content="${appUrl}/api/quiz" />
           ${currentQuestion.options.map((option, index) => 
             `<meta property="fc:frame:button:${index + 1}" content="${option}" />`
           ).join('\n')}
-          <meta property="fc:frame:post_url" content="${appUrl}/api/quiz" />
         </head>
       </html>
     `;

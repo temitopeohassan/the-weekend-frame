@@ -159,7 +159,7 @@ export default function Quiz(
   }, [answers, currentQuestion, questions.length]);
 
   const shareResult = useCallback(() => {
-    const shareText = `I got ${quizResult} in the Stablecoin Personality Quiz! Which Stablecoin are you? `;
+    const shareText = `I got ${quizResult} in the Stablecoin Personality Quiz! Which Stablecoin are you? 💰`;
     const shareUrl = `https://warpcast.com/~/compose?text=${encodeURIComponent(shareText)}`;
     sdk.actions.openUrl(shareUrl);
   }, [quizResult]);
