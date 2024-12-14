@@ -151,7 +151,7 @@ export default function Quiz(
     } catch (error) {
       console.error('Error submitting answer:', error);
     }
-  }, [answers, currentQuestion, questions.length, appUrl]);
+  }, [answers, currentQuestion, questions.length]);
 
   const shareResult = useCallback(() => {
     const shareText = `I got ${quizResult} in the Stablecoin Personality Quiz! Which Stablecoin are you? `;
