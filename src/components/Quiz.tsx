@@ -22,7 +22,7 @@ const QUESTIONS = [
   // Add all your questions here
 ];
 
-function calculateStablecoin(currentAnswers: number[]): string {
+function calculateStablecoin(answers: number[]): string {
   const options = ["USD Coin (USDC)", "DAI Stablecoin", "Tether (USDT)", "Frax"];
   return options[Math.floor(Math.random() * options.length)];
 }
