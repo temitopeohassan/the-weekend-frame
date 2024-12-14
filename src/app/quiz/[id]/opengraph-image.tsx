@@ -24,7 +24,7 @@ export default async function Image({ params }: { params: { id: string } }) {
   return new ImageResponse(
     (
       <div tw="h-full w-full flex flex-col justify-center items-center relative bg-purple-900 text-white p-8">
-        <h1 tw="text-4xl font-bold text-center mb-6">F1 Team Quiz</h1>
+        <h1 tw="text-4xl font-bold text-center mb-6">Stablecoin Quiz</h1>
         <p tw="text-2xl text-center">{questionText}</p>
       </div>
     ),
