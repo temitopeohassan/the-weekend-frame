@@ -8,35 +8,17 @@ import sdk, {
 
 const appUrl = process.env.NEXT_PUBLIC_URL || "https://the-weekend-frame-seven.vercel.app";
 
-const QUESTIONS = [
-  {
-    id: "1",
-    text: "What's your approach to financial stability?",
-    options: [
-      "Conservative and regulated",
-      "Decentralized and algorithmic",
-      "Traditional and backed",
-      "Innovative and flexible"
-    ]
-  },
-  // Add all your questions here
-];
-
-function calculateStablecoin(answers: number[]): string {
-  const options = ["USD Coin (USDC)", "DAI Stablecoin", "Tether (USDT)", "Frax"];
-  return options[Math.floor(Math.random() * options.length)];
-}
-
 export default function Quiz(
   { title }: { title?: string } = { title: "Stablecoin Personality Quiz" }
 ) {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [context, setContext] = useState<FrameContext>();
   const [isContextOpen, setIsContextOpen] = useState(false);
-  const [notificationDetails, setNotificationDetails] = useState<FrameNotificationDetails | null>(null);
+  const [notificationDetails, setNotificationDetails] =
+    useState<FrameNotificationDetails | null>(null);
   const [quizStarted, setQuizStarted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
-  const [currentAnswers, setCurrentAnswers] = useState<number[]>([]);
+  const [answers, setAnswers] = useState<number[]>([]);
   const [quizComplete, setQuizComplete] = useState(false);
   const [quizResult, setQuizResult] = useState<string>("");
 
@@ -55,11 +37,59 @@ export default function Quiz(
     }
   }, [isSDKLoaded]);
 
+  const questions = [
+    {
+      text: "What's your approach to financial stability?",
+      options: [
+        "Traditional and Regulated",
+        "Algorithmic and Dynamic",
+        "Asset-Backed and Secure",
+        "Community-Driven"
+      ]
+    },
+    {
+      text: "Pick your ideal backing asset:",
+      options: [
+        "US Dollar",
+        "Crypto Assets",
+        "Multiple Currencies",
+        "Gold and Commodities"
+      ]
+    },
+    {
+      text: "What's most important to you?",
+      options: [
+        "Regulatory Compliance",
+        "Innovation",
+        "Transparency",
+        "Decentralization"
+      ]
+    },
+    {
+      text: "Choose your preferred blockchain:",
+      options: [
+        "Ethereum",
+        "Multiple Chains",
+        "Layer 2 Solutions",
+        "Alternative L1s"
+      ]
+    },
+    {
+      text: "What's your risk tolerance?",
+      options: [
+        "Very Low",
+        "Moderate",
+        "Low",
+        "Balanced"
+      ]
+    }
+  ];
+
   const startQuiz = useCallback(async () => {
     try {
       setQuizStarted(true);
       setCurrentQuestion(0);
-      setCurrentAnswers([]);
+      setAnswers([]);
       setQuizComplete(false);
       setQuizResult("");
       
@@ -89,23 +119,42 @@ export default function Quiz(
 
   const handleAnswer = useCallback(async (answerIndex: number) => {
     try {
-      const newAnswers = [...currentAnswers, answerIndex];
-      setCurrentAnswers(newAnswers);
+      const newAnswers = [...answers, answerIndex];
+      setAnswers(newAnswers);
       
-      if (currentQuestion >= QUESTIONS.length - 1) {
-        const result = calculateStablecoin(newAnswers);
+      const response = await fetch(`${appUrl}/api/quiz`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          untrustedData: {
+            buttonIndex: answerIndex
+          }
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit answer');
+      }
+
+      const html = await response.text();
+      
+      if (currentQuestion >= questions.length - 1) {
+        const teamMatch = html.match(/content="([^"]*?)\/quiz\/result\/(.*?)\/opengraph-image"/);
+        const result = teamMatch ? decodeURIComponent(teamMatch[2]) : "Unknown Result";
         setQuizResult(result);
         setQuizComplete(true);
       } else {
         setCurrentQuestion(prev => prev + 1);
       }
     } catch (error) {
-      console.error('Error handling answer:', error);
+      console.error('Error submitting answer:', error);
     }
-  }, [currentAnswers, currentQuestion]);
+  }, [answers, currentQuestion, questions.length, appUrl]);
 
   const shareResult = useCallback(() => {
-    const shareText = `I got ${quizResult} in the Stablecoin Personality Quiz! Which Stablecoin are you? 💰`;
+    const shareText = `I got ${quizResult} in the Stablecoin Personality Quiz! Which Stablecoin are you? `;
     const shareUrl = `https://warpcast.com/~/compose?text=${encodeURIComponent(shareText)}`;
     sdk.actions.openUrl(shareUrl);
   }, [quizResult]);
@@ -136,9 +185,9 @@ export default function Quiz(
         </div>
       ) : !quizComplete ? (
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">{QUESTIONS[currentQuestion].text}</h2>
+          <h2 className="text-xl font-semibold mb-4">{questions[currentQuestion].text}</h2>
           <div className="space-y-2">
-            {QUESTIONS[currentQuestion].options.map((option, index) => (
+            {questions[currentQuestion].options.map((option, index) => (
               <button
                 key={index}
                 onClick={() => handleAnswer(index + 1)}
