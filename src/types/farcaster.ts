@@ -9,16 +9,6 @@ export type FrameConfig = {
   post_url: string;
 };
 
-export type TriggerConfig = {
-  // Add trigger configurations if needed
-};
-
 export type FarcasterManifest = {
-  accountAssociation: {
-    header: string;
-    payload: string;
-    signature: string;
-  };
   frame: FrameConfig;
-  triggers?: TriggerConfig[];
-}; 
+};
