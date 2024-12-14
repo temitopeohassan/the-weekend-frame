@@ -15,8 +15,16 @@ export type AccountAssociation = {
   signature: string;
 };
 
+export type TriggerConfig = {
+  event: "frame_added" | "frame_removed" | "notifications_enabled" | "notifications_disabled";
+  notificationDetails?: {
+    title: string;
+    body: string;
+  };
+};
+
 export type FarcasterManifest = {
   accountAssociation: AccountAssociation;
   frame: FrameConfig;
-  triggers?: any[]; // You can define a more specific type if needed
+  triggers?: TriggerConfig[];
 }; 
