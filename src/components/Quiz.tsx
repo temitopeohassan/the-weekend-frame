@@ -8,8 +8,6 @@ import sdk, {
 
 const appUrl = process.env.NEXT_PUBLIC_URL || "https://the-weekend-frame-seven.vercel.app";
 
-let currentAnswers: number[] = [];
-
 const QUESTIONS = [
   {
     id: "1",
@@ -24,10 +22,8 @@ const QUESTIONS = [
   // Add all your questions here
 ];
 
-function calculateStablecoin(answers: number[]): string {
-  // Move your calculation logic here
+function calculateStablecoin(currentAnswers: number[]): string {
   const options = ["USD Coin (USDC)", "DAI Stablecoin", "Tether (USDT)", "Frax"];
-  // Add your logic to determine which stablecoin to return
   return options[Math.floor(Math.random() * options.length)];
 }
 
@@ -37,11 +33,10 @@ export default function Quiz(
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [context, setContext] = useState<FrameContext>();
   const [isContextOpen, setIsContextOpen] = useState(false);
-  const [notificationDetails, setNotificationDetails] =
-    useState<FrameNotificationDetails | null>(null);
+  const [notificationDetails, setNotificationDetails] = useState<FrameNotificationDetails | null>(null);
   const [quizStarted, setQuizStarted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
-  const [answers, setAnswers] = useState<number[]>([]);
+  const [currentAnswers, setCurrentAnswers] = useState<number[]>([]);
   const [quizComplete, setQuizComplete] = useState(false);
   const [quizResult, setQuizResult] = useState<string>("");
 
@@ -64,7 +59,7 @@ export default function Quiz(
     try {
       setQuizStarted(true);
       setCurrentQuestion(0);
-      setAnswers([]);
+      setCurrentAnswers([]);
       setQuizComplete(false);
       setQuizResult("");
       
@@ -94,12 +89,11 @@ export default function Quiz(
 
   const handleAnswer = useCallback(async (answerIndex: number) => {
     try {
-      const newAnswers = [...answers, answerIndex];
-      setAnswers(newAnswers);
-      currentAnswers.push(answerIndex);
+      const newAnswers = [...currentAnswers, answerIndex];
+      setCurrentAnswers(newAnswers);
       
       if (currentQuestion >= QUESTIONS.length - 1) {
-        const result = calculateStablecoin(currentAnswers);
+        const result = calculateStablecoin(newAnswers);
         setQuizResult(result);
         setQuizComplete(true);
       } else {
@@ -108,7 +102,7 @@ export default function Quiz(
     } catch (error) {
       console.error('Error handling answer:', error);
     }
-  }, [answers, currentQuestion]);
+  }, [currentAnswers, currentQuestion]);
 
   const shareResult = useCallback(() => {
     const shareText = `I got ${quizResult} in the Stablecoin Personality Quiz! Which Stablecoin are you? 💰`;
