@@ -3,18 +3,6 @@ import App from "./app";
 
 const appUrl = process.env.NEXT_PUBLIC_URL || "https://the-weekend-frame-seven.vercel.app";
 
-const frame = {
-  version: "vNext",
-  image: `${appUrl}/opengraph-image`,
-  buttons: [
-    {
-      label: "Start Quiz",
-      action: "post"
-    }
-  ],
-  post_url: `${appUrl}/api/quiz`
-};
-
 export const revalidate = 300;
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -32,7 +20,10 @@ export async function generateMetadata(): Promise<Metadata> {
       }],
     },
     other: {
-      "fc:frame": JSON.stringify(frame),
+      "fc:frame": "vNext",
+      "fc:frame:image": `${appUrl}/opengraph-image`,
+      "fc:frame:button:1": "Start Quiz",
+      "fc:frame:post_url": `${appUrl}/api/quiz`,
     },
   };
 }

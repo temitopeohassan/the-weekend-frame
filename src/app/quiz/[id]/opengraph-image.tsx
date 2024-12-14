@@ -11,11 +11,11 @@ export const contentType = "image/png";
 
 export default async function Image({ params }: { params: { id: string } }) {
   const questions = [
-    "What's your approach to competition?",
-    "Pick your ideal racing conditions:",
-    "What's your team philosophy?",
-    "Choose your team color:",
-    "What's most important to you?"
+    "What's your approach to financial stability?",
+    "How do you handle market volatility?",
+    "What's your preferred backing mechanism?",
+    "How important is decentralization to you?",
+    "What's your risk tolerance?"
   ];
 
   const questionIndex = parseInt(params.id) - 1;
