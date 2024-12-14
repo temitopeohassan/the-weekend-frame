@@ -139,13 +139,15 @@ export default function Quiz(
       }
 
       const html = await response.text();
+      console.log('Response HTML:', html); // Debug log
       
       if (currentQuestion >= questions.length - 1) {
-        const resultPattern = /(?:\/result\/|result=)([\w%-]+)(?:\/opengraph-image|")/;
+        // Updated regex to specifically match the fc:frame:image meta tag
+        const resultPattern = /<meta property="fc:frame:image" content="[^"]*\/quiz\/result\/([^/"]+)\/opengraph-image"/;
         const teamMatch = html.match(resultPattern);
         const result = teamMatch ? decodeURIComponent(teamMatch[1]) : "Unknown Result";
-        console.log('Result HTML:', html);
-        console.log('Extracted Result:', result);
+        console.log('Match found:', !!teamMatch); // Debug log
+        console.log('Extracted Result:', result); // Debug log
         setQuizResult(result);
         setQuizComplete(true);
       } else {
