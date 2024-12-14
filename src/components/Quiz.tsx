@@ -8,6 +8,29 @@ import sdk, {
 
 const appUrl = process.env.NEXT_PUBLIC_URL || "https://the-weekend-frame-seven.vercel.app";
 
+let currentAnswers: number[] = [];
+
+const QUESTIONS = [
+  {
+    id: "1",
+    text: "What's your approach to financial stability?",
+    options: [
+      "Conservative and regulated",
+      "Decentralized and algorithmic",
+      "Traditional and backed",
+      "Innovative and flexible"
+    ]
+  },
+  // Add all your questions here
+];
+
+function calculateStablecoin(answers: number[]): string {
+  // Move your calculation logic here
+  const options = ["USD Coin (USDC)", "DAI Stablecoin", "Tether (USDT)", "Frax"];
+  // Add your logic to determine which stablecoin to return
+  return options[Math.floor(Math.random() * options.length)];
+}
+
 export default function Quiz(
   { title }: { title?: string } = { title: "Stablecoin Personality Quiz" }
 ) {
@@ -36,54 +59,6 @@ export default function Quiz(
       load();
     }
   }, [isSDKLoaded]);
-
-  const questions = [
-    {
-      text: "What's your approach to financial stability?",
-      options: [
-        "Traditional and Regulated",
-        "Algorithmic and Dynamic",
-        "Asset-Backed and Secure",
-        "Community-Driven"
-      ]
-    },
-    {
-      text: "Pick your ideal backing asset:",
-      options: [
-        "US Dollar",
-        "Crypto Assets",
-        "Multiple Currencies",
-        "Gold and Commodities"
-      ]
-    },
-    {
-      text: "What's most important to you?",
-      options: [
-        "Regulatory Compliance",
-        "Innovation",
-        "Transparency",
-        "Decentralization"
-      ]
-    },
-    {
-      text: "Choose your preferred blockchain:",
-      options: [
-        "Ethereum",
-        "Multiple Chains",
-        "Layer 2 Solutions",
-        "Alternative L1s"
-      ]
-    },
-    {
-      text: "What's your risk tolerance?",
-      options: [
-        "Very Low",
-        "Moderate",
-        "Low",
-        "Balanced"
-      ]
-    }
-  ];
 
   const startQuiz = useCallback(async () => {
     try {
@@ -121,42 +96,19 @@ export default function Quiz(
     try {
       const newAnswers = [...answers, answerIndex];
       setAnswers(newAnswers);
+      currentAnswers.push(answerIndex);
       
-      const response = await fetch(`${appUrl}/api/quiz`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          untrustedData: {
-            buttonIndex: answerIndex
-          }
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to submit answer');
-      }
-
-      const html = await response.text();
-      console.log('Response HTML:', html); // Debug log
-      
-      if (currentQuestion >= questions.length - 1) {
-        // Updated regex to specifically match the fc:frame:image meta tag
-        const resultPattern = /<meta property="fc:frame:image" content="[^"]*\/quiz\/result\/([^/"]+)\/opengraph-image"/;
-        const teamMatch = html.match(resultPattern);
-        const result = teamMatch ? decodeURIComponent(teamMatch[1]) : "Unknown Result";
-        console.log('Match found:', !!teamMatch); // Debug log
-        console.log('Extracted Result:', result); // Debug log
+      if (currentQuestion >= QUESTIONS.length - 1) {
+        const result = calculateStablecoin(currentAnswers);
         setQuizResult(result);
         setQuizComplete(true);
       } else {
         setCurrentQuestion(prev => prev + 1);
       }
     } catch (error) {
-      console.error('Error submitting answer:', error);
+      console.error('Error handling answer:', error);
     }
-  }, [answers, currentQuestion, questions.length]);
+  }, [answers, currentQuestion]);
 
   const shareResult = useCallback(() => {
     const shareText = `I got ${quizResult} in the Stablecoin Personality Quiz! Which Stablecoin are you? 💰`;
@@ -190,9 +142,9 @@ export default function Quiz(
         </div>
       ) : !quizComplete ? (
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">{questions[currentQuestion].text}</h2>
+          <h2 className="text-xl font-semibold mb-4">{QUESTIONS[currentQuestion].text}</h2>
           <div className="space-y-2">
-            {questions[currentQuestion].options.map((option, index) => (
+            {QUESTIONS[currentQuestion].options.map((option, index) => (
               <button
                 key={index}
                 onClick={() => handleAnswer(index + 1)}

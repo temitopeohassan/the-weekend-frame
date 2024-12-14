@@ -1,22 +1,37 @@
-import type { Metadata } from "next";
+import { Metadata } from "next";
 
-import "~/app/globals.css";
+const appUrl = process.env.NEXT_PUBLIC_URL || "https://the-weekend-frame-seven.vercel.app";
 
 export const metadata: Metadata = {
-  title: "The Weekend Frame",
-  description: "What Stablecoin Are You?",
+  metadataBase: new URL(appUrl),
+  title: "Stablecoin Personality Quiz",
+  description: "Which Stablecoin Are You?",
+  openGraph: {
+    title: "Stablecoin Personality Quiz",
+    description: "Which Stablecoin Are You?",
+    images: [{
+      url: `/opengraph-image`,
+      width: 600,
+      height: 400,
+    }],
+  },
+  other: {
+    "fc:frame": "vNext",
+    "fc:frame:image": `${appUrl}/opengraph-image`,
+    "fc:frame:button:1": "Start Quiz",
+    "fc:frame:post_url": `${appUrl}/api/quiz`,
+    "fc:frame:button:1:action": "post"
+  },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body className="bg-white dark:bg-gray-900">
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
