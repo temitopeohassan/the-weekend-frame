@@ -1,5 +1,5 @@
-import { type FarcasterManifest } from '~/types/farcaster';
-import { generateAccountAssociation } from '~/utils/farcaster';
+import { type FarcasterManifest } from '../../../types/farcaster';
+import { generateAccountAssociation } from '../../../utils/farcaster';
 
 export async function GET() {
   const appUrl = process.env.NEXT_PUBLIC_URL || "https://the-weekend-frame-seven.vercel.app";
