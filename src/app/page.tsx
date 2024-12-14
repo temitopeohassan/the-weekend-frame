@@ -4,18 +4,15 @@ import App from "./app";
 const appUrl = process.env.NEXT_PUBLIC_URL || "https://the-weekend-frame-seven.vercel.app";
 
 const frame = {
-  version: "next",
-  imageUrl: `${appUrl}/opengraph-image`,
-  button: {
-    title: "Start Quiz",
-    action: {
-      type: "launch_frame",
-      name: "Stablecoin Personality Quiz",
-      url: `${appUrl}/api/quiz`,
-      splashImageUrl: `${appUrl}/splash.png`,
-      splashBackgroundColor: "#f7f7f7",
-    },
-  },
+  version: "vNext",
+  image: `${appUrl}/opengraph-image`,
+  buttons: [
+    {
+      label: "Start Quiz",
+      action: "post"
+    }
+  ],
+  post_url: `${appUrl}/api/quiz`
 };
 
 export const revalidate = 300;
