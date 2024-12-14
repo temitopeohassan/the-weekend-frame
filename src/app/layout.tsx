@@ -4,7 +4,7 @@ import "~/app/globals.css";
 
 export const metadata: Metadata = {
   title: "The Weekend Frame",
-  description: "Which Formula 1 Team Are You?",
+  description: "What Stablecoin Are You?",
 };
 
 export default function RootLayout({

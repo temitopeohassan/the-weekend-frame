@@ -13,7 +13,7 @@ export default async function Image() {
     (
       <div tw="h-full w-full flex flex-col justify-center items-center relative bg-purple-900 text-white">
         <h1 tw="text-6xl font-bold">The Weekend Frame</h1>
-        <p tw="text-2xl mt-4">Which Formula 1 Team Are You?</p>
+        <p tw="text-2xl mt-4">What Stablecoin Are You?</p>
       </div>
     ),
     {
