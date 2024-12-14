@@ -141,8 +141,11 @@ export default function Quiz(
       const html = await response.text();
       
       if (currentQuestion >= questions.length - 1) {
-        const teamMatch = html.match(/content="([^"]*?)\/quiz\/result\/(.*?)\/opengraph-image"/);
-        const result = teamMatch ? decodeURIComponent(teamMatch[2]) : "Unknown Result";
+        const resultPattern = /(?:\/result\/|result=)([\w%-]+)(?:\/opengraph-image|")/;
+        const teamMatch = html.match(resultPattern);
+        const result = teamMatch ? decodeURIComponent(teamMatch[1]) : "Unknown Result";
+        console.log('Result HTML:', html);
+        console.log('Extracted Result:', result);
         setQuizResult(result);
         setQuizComplete(true);
       } else {
