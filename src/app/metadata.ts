@@ -5,13 +5,16 @@ const appUrl = process.env.NEXT_PUBLIC_URL || "https://the-weekend-frame-seven.v
 const frame = {
   version: "next",
   imageUrl: `${appUrl}/opengraph-image`,
-  buttons: [
-    {
-      label: "Start Quiz",
-      action: "post"
+  button: {
+    title: "Start Quiz",
+    action: {
+      type: "launch_frame",
+      name: "Stablecoin Personality Quiz",
+      url: `${appUrl}/api/quiz`,
+      splashImageUrl: `${appUrl}/splash.png`,
+      splashBackgroundColor: "#581C87"
     }
-  ],
-  postUrl: `${appUrl}/api/quiz`
+  }
 };
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -30,9 +33,9 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     other: {
       "fc:frame": JSON.stringify(frame),
-      "fc:frame:image": `/opengraph-image`,
-      "fc:frame:button:1": "Start Quiz",
-      "fc:frame:post_url": `/api/quiz`,
+    },
+  };
+}
     },
   };
 }
